@@ -115,7 +115,7 @@ def _py_cloud_function_impl(ctx):
       '--env_vars_file',
       ctx.attr.environments_file.files.to_list()[0].path,
     ])
-    gcloud_cmdline.extend(['--env-vars-file', ctx.attr.environments_file.files.to_list()[0].path])
+    gcloud_cmdline.extend(['--env-vars-file', '$temp_dir/.env.yaml'])
 
   if ctx.attr.region:
     gcloud_cmdline.extend(['--region', ctx.attr.region])
