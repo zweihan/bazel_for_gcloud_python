@@ -8,10 +8,15 @@ MEMORY_VALUES = [
 MAX_TIMEOUT = 540
 PYTHON_RUNTIMES = ["python37", "python38", "python39"]
 
-DEPLOY_SCRIPT_TEMPLATE = '''#!/usr/bin/env fish
-set gcf_archive (status --current-filename | sed 's/\.fish$/\.zip/' | xargs realpath)
-set temp_dir (mktemp -d)
+DEPLOY_SCRIPT_TEMPLATE = '''#!/bin/bash
+set -e
+script_dir=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
+
+gcf_archive="$script_dir/$(basename "$0" | sed 's/\\.sh$/\\.zip/')"
+temp_dir=$(mktemp -d)
 unzip $gcf_archive -d $temp_dir > /dev/null
+echo "Deploying from $temp_dir"
+echo "files: $(ls $temp_dir)"
 {gcloud_cmdline} --source $temp_dir
 rm -rf $temp_dir
 '''
@@ -110,12 +115,13 @@ def _py_cloud_function_impl(ctx):
       '--env_vars_file',
       ctx.attr.environments_file.files.to_list()[0].path,
     ])
-    gcloud_cmdline.extend(['--env-vars-file', '$temp_dir/.env.yaml'])
+    gcloud_cmdline.extend(['--env-vars-file', ctx.attr.environments_file.files.to_list()[0].path])
 
   if ctx.attr.region:
     gcloud_cmdline.extend(['--region', ctx.attr.region])
-
-  deploy_script_content = DEPLOY_SCRIPT_TEMPLATE.format(gcloud_cmdline=' '.join(gcloud_cmdline))
+  
+  gcloud_cmdline_str = ' '.join(gcloud_cmdline)
+  deploy_script_content = DEPLOY_SCRIPT_TEMPLATE.replace('{gcloud_cmdline}', gcloud_cmdline_str)
   ctx.actions.write(output = ctx.outputs.deploy, content = deploy_script_content)
 
   if ctx.attr.debug:
@@ -167,7 +173,7 @@ py_cloud_function = rule(
   },
   outputs = {
     'code_archive': '%{name}.zip',
-    'deploy': '%{name}.fish',
+    'deploy': '%{name}.sh',
   },
   executable = True,
 )
