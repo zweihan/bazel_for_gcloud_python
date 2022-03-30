@@ -1,3 +1,0 @@
-# Build to ZIP.
-run --build_python_zip
-build --build_python_zip

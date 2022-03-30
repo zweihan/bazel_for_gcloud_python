@@ -18,13 +18,18 @@ py_binary(
     ]
 )
 
+filegroup(
+    name = "hello_zip",
+     srcs = [":hello"],
+    output_group = "python_zip_file",
+)
+
 # 'bazel run' this rule to trigger deployment.
 py_cloud_function(
     # Required parameters:
     name = "hello_deploy",
-    src = ":hello",
+    srcs = [":hello", ":hello_zip"],
     entry = "hello",
-
     # Specify your pip requirements here:
     # requirements = [
     #   "google-cloud-logging",

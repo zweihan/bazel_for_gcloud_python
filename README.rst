@@ -2,6 +2,11 @@
 Bazel Rules: Python 3 Google App Engine & Google Cloud Functions
 ================================================================
 
+** READ FIRST **
+This repo differs from the original repo in 2 ways:
+1. Uses Bash instead of fish
+2. Does not depend on setting --build_python_zip flag
+
 This repository contains the `Bazel <https://bazel.build>`_ (`Starlark <https://docs.bazel.build/versions/master/skylark/language.html>`_) rules to build Python 3 and deploy to Google App Engine and Google Cloud Functions.
 
 Usage
@@ -47,9 +52,15 @@ Put this in the ``BUILD`` file::
       ],
   )
 
+  filegroup(
+    name = "hello_zip",
+    srcs = [":hello"],
+    output_group = "python_zip_file",
+  )
+
   py_cloud_function(
       name = "hello_deploy",
-      src = ":hello",
+      srcs = [":hello", ":hello_zip"],
       entry = "hello",
   )
 
@@ -101,7 +112,6 @@ This solution depends on these commands being available:
 * `The fish shell <http://fishshell.com/>`_ at ``fish``
 * `The Google Cloud SDK <https://cloud.google.com/sdk/>`_ at ``gcloud``
 
-Your Bazel workspace should be set to generate a ZIP package for ``py_binary`` targets, by setting some parameters in the ``.bazelrc`` file, `like this <examples/.bazelrc>`_.
 
 LICENSE
 =======

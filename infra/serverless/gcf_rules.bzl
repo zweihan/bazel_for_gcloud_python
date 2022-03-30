@@ -33,11 +33,12 @@ def _compute_module_path(f):
 def _py_cloud_function_impl(ctx):
   src_zip = None
   src_py = None
-  for f in ctx.attr.src.files.to_list():
-    if f.extension == SRC_ZIP_EXTENSION:
-      src_zip = f
-    if f.extension == SRC_PY_EXTENSION:
-      src_py = f
+  for src in ctx.attr.srcs:
+    for f in src.files.to_list():
+      if f.extension == SRC_ZIP_EXTENSION:
+        src_zip = f
+      if f.extension == SRC_PY_EXTENSION:
+        src_py = f
   if not src_zip:
     fail('ZIP src input not found.', 'src')
   if not src_py:
@@ -126,8 +127,7 @@ def _py_cloud_function_impl(ctx):
 
   if ctx.attr.debug:
     print('args: {}'.format(args))
-
-  inputs = ctx.attr.src.files.to_list()
+  inputs = [f for f in src.files.to_list() for src in ctx.attr.srcs]
   if ctx.attr.requirements_file:
     inputs += ctx.attr.requirements_file.files.to_list()
   if ctx.attr.environments_file:
@@ -147,7 +147,7 @@ def _py_cloud_function_impl(ctx):
 py_cloud_function = rule(
   implementation = _py_cloud_function_impl,
   attrs = {
-    'src': attr.label(mandatory = True),
+    'srcs': attr.label_list(mandatory = True),
     'module': attr.string(),  # optional. Can be inferred.
     'runtime': attr.string(),
     'entry': attr.string(mandatory = True),
