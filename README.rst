@@ -100,6 +100,9 @@ GCS bucket trigger (Cloud Functions only)
 General event trigger (Cloud Functions only)
   if you want your function to be triggered by other event types
 
+Retry (Cloud Functions only)
+  to enable retries in the event the function terminates with an error
+
 Memory in MiB (Cloud Functions only)
   the default is 256 MiB but you can request more, up to 2,048 MiB
 

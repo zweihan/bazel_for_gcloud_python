@@ -106,6 +106,9 @@ def _py_cloud_function_impl(ctx):
   else:
     gcloud_cmdline.extend(['--trigger-http'])
 
+  if ctx.attr.retry:
+    gcloud_cmdline.extend(['--retry'])
+
   if ctx.attr.memory:
     gcloud_cmdline.extend(['--memory', '{}MB'.format(ctx.attr.memory)])
 
@@ -165,6 +168,7 @@ py_cloud_function = rule(
     'trigger_bucket': attr.string(),
     'trigger_event': attr.string(),
     'trigger_resource': attr.string(),
+    'retry': attr.bool(), 
     'memory': attr.int(values = MEMORY_VALUES, default = 256),
     'timeout': attr.int(),
     'debug': attr.bool(),
