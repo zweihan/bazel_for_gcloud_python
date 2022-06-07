@@ -88,6 +88,9 @@ Python Runtime (Cloud Functions only)
 Deploy name (Cloud Functions only)
   the name of the deployed function (in GCP) and also in the HTTP path
 
+Service account email (Cloud Functions only)
+  the email of the service account used for the Cloud Function
+
 Pub/Sub topic trigger (Cloud Functions only)
   if you want your function to be triggered by a Cloud Pub/Sub message
 
