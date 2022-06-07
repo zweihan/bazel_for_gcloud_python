@@ -88,6 +88,8 @@ def _py_cloud_function_impl(ctx):
   
   gcloud_cmdline.extend(['--entry-point', ctx.attr.entry])
 
+  gcloud_cmdline.extend(['--service-account', ctx.attr.service_account_email])
+
   if ctx.attr.trigger_topic:
     gcloud_cmdline.extend(['--trigger-topic', ctx.attr.trigger_topic])
   elif ctx.attr.trigger_bucket:
@@ -157,6 +159,7 @@ py_cloud_function = rule(
     'gcloud_project': attr.string(),
     'region': attr.string(),
     'deploy_name': attr.string(),
+    'service_account_email': attr.string(mandatory = True),
     'trigger_topic': attr.string(),
     'trigger_bucket': attr.string(),
     'trigger_event': attr.string(),
