@@ -109,6 +109,11 @@ Memory in MiB (Cloud Functions only)
 Timeout in seconds (Cloud Functions only)
   the default is 60 s but you can request up to 540 s.
 
+Secrets (Cloud Functions only)
+  if you want to use secrets from Secret Manager in your function, pass it in as a list in the following format:
+```
+  <ENV_VAR>=<SECRET_ID>:<VERSION>
+```
 Requirements
 ============
 
