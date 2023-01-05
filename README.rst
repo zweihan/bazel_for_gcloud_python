@@ -4,8 +4,9 @@ Bazel Rules: Python 3 Google App Engine & Google Cloud Functions
 
 ** READ FIRST **
 This repo differs from the original repo in 2 ways:
-1. Uses Bash instead of fish
-2. Does not depend on setting --build_python_zip flag
+
+#. Uses Bash instead of fish
+#. Does not depend on setting --build_python_zip flag
 
 This repository contains the `Bazel <https://bazel.build>`_ (`Starlark <https://docs.bazel.build/versions/master/skylark/language.html>`_) rules to build Python 3 and deploy to Google App Engine and Google Cloud Functions.
 
@@ -110,10 +111,10 @@ Timeout in seconds (Cloud Functions only)
   the default is 60 s but you can request up to 540 s.
 
 Secrets (Cloud Functions only)
-  if you want to use secrets from Secret Manager in your function, pass it in as a list in the following format:
- ```
-  <ENV_VAR>=<SECRET_ID>:<VERSION>
- ```
+  if you want to use secrets from Secret Manager in your function, pass it in as a list in the following format::
+
+    <ENV_VAR>=<SECRET_ID>:<VERSION>
+
 Requirements
 ============
 
