@@ -128,7 +128,7 @@ def _py_cloud_function_impl(ctx):
     gcloud_cmdline.extend(['--region', ctx.attr.region])
   
   if ctx.attr.secrets:
-    gcloud_cmdline.extend(['--set-secrets', ctx.attr.secrets.join(',')])
+    gcloud_cmdline.extend(['--set-secrets', (',').join(ctx.attr.secrets)])
 
   gcloud_cmdline_str = ' '.join(gcloud_cmdline)
   deploy_script_content = DEPLOY_SCRIPT_TEMPLATE.replace('{gcloud_cmdline}', gcloud_cmdline_str)
