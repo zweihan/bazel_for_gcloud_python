@@ -111,9 +111,9 @@ Timeout in seconds (Cloud Functions only)
 
 Secrets (Cloud Functions only)
   if you want to use secrets from Secret Manager in your function, pass it in as a list in the following format:
-```
+ ```
   <ENV_VAR>=<SECRET_ID>:<VERSION>
-```
+ ```
 Requirements
 ============
 
